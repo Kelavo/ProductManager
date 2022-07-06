@@ -11,9 +11,9 @@ public class ProductTest {
     Smartphone item1 = new Smartphone(1, "Смартфон", 50000, "А20", "Samsung");
     Smartphone item2 = new Smartphone(2, "Смартфон", 75000, "Iphone 13", "Apple");
     Smartphone item3 = new Smartphone(3, "Смартфон", 35000, "Mi10", "Xiaomi");
-    Book item4 = new Book(4, "Война и Мир", 800, "Книга", "Л.Н. Толстой");
-    Book item5 = new Book(5, "Белый отряд", 750, "Книга", "Артур Конан Дойл");
-    Book item6 = new Book(6, "Сегун", 900, "Книга", "Джеймс Клавелл");
+    Book item4 = new Book(4, "Книга. Война и Мир", 800, "Книга", "Л.Н. Толстой");
+    Book item5 = new Book(5, "Книга. Белый отряд", 750, "Книга", "Артур Конан Дойл");
+    Book item6 = new Book(6, "Книга. Сегун", 900, "Книга", "Джеймс Клавелл");
 
     ProductRepository repo = new ProductRepository();
     ProductManager manager = new ProductManager(repo);
@@ -69,4 +69,30 @@ public class ProductTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldSearchBySeveralElement() {
+
+        repo.save(item4);
+        repo.save(item5);
+        repo.save(item6);
+
+        Product[] expected = {item4, item5, item6};
+        Product[] actual = manager.searchBy("Книга");
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchByNoElements() {
+
+        repo.save(item1);
+        repo.save(item2);
+        repo.save(item5);
+        repo.save(item6);
+
+        Product[] expected = {};
+        Product[] actual = manager.searchBy("Толстой");
+
+        assertArrayEquals(expected, actual);
+    }
 }
